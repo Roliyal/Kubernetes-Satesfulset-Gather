@@ -1,0 +1,131 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: cluster-1
+  namespace: redis-cluster-issac
+spec:
+  capacity:
+    storage: 20Gi
+  accessModes: 
+  - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Recycle
+  storageClassName: "nas"
+ csi:
+    driver: nasplugin.csi.alibabacloud.com
+    volumeHandle: pv-nas
+    volumeAttributes:
+      server: " "
+      path: "/csi"
+  mountOptions:
+  - nolock,tcp,noresvport
+  - vers=3
+---  
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: cluster2
+  namespace: redis-cluster-issac
+spec:
+  capacity:
+    storage: 20Gi
+  accessModes: 
+  - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Recycle
+  storageClassName: "nas"
+ csi:
+    driver: nasplugin.csi.alibabacloud.com
+    volumeHandle: pv-nas
+    volumeAttributes:
+      server: " "
+      path: "/csi"
+  mountOptions:
+  - nolock,tcp,noresvport
+  - vers=3
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: cluster-3
+  namespace: redis-cluster-issac
+spec:
+  capacity:
+    storage: 20Gi
+  accessModes: 
+  - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Recycle
+  storageClassName: "nas"
+ csi:
+    driver: nasplugin.csi.alibabacloud.com
+    volumeHandle: pv-nas
+    volumeAttributes:
+      server: " "
+      path: "/csi"
+  mountOptions:
+  - nolock,tcp,noresvport
+  - vers=3
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: cluster-4
+  namespace: redis-cluster-issac
+spec:
+  capacity:
+    storage: 20Gi
+  accessModes: 
+  - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Recycle
+  storageClassName: "nas"
+ csi:
+    driver: nasplugin.csi.alibabacloud.com
+    volumeHandle: pv-nas
+    volumeAttributes:
+      server: " "
+      path: "/csi"
+  mountOptions:
+  - nolock,tcp,noresvport
+  - vers=3
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: cluster-5
+  namespace: redis-cluster-issac
+spec:
+  capacity:
+    storage: 20Gi
+  accessModes: 
+  - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Recycle
+  storageClassName: "nas"
+ csi:
+    driver: nasplugin.csi.alibabacloud.com
+    volumeHandle: pv-nas
+    volumeAttributes:
+      server: " "
+      path: "/csi"
+  mountOptions:
+  - nolock,tcp,noresvport
+  - vers=3
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: cluster-6
+  namespace: redis-cluster-issac
+spec:
+  capacity:
+    storage: 20Gi
+  accessModes: 
+  - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Recycle
+  storageClassName: "nas"
+ csi:
+    driver: nasplugin.csi.alibabacloud.com
+    volumeHandle: pv-nas
+    volumeAttributes:
+      server: " "
+      path: "/csi"
+  mountOptions:
+  - nolock,tcp,noresvport
+  - vers=3
