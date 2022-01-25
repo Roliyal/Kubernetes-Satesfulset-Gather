@@ -18,7 +18,7 @@ The full list of Redis commands. https://redis.io/commands
 There is much more inside the official Redis documentation. https://redis.io/documentation
 
 
-## Table of Contents
+## 目录
 
 - [集群背景](#集群背景)
 - [安装配置](#安装配置)
@@ -29,29 +29,34 @@ There is much more inside the official Redis documentation. https://redis.io/doc
 ## 集群背景
 ![image](https://user-images.githubusercontent.com/96233798/150904170-7cdf3be2-88ab-4caa-8852-b7c0e893f287.png)
 
-Standard Readme started with the issue originally posed by [@maxogden](https://github.com/maxogden) over at [feross/standard](https://github.com/feross/standard) in [this issue](https://github.com/feross/standard/issues/141), about whether or not a tool to standardize readmes would be useful. A lot of that discussion ended up in [zcei's standard-readme](https://github.com/zcei/standard-readme/issues/1) repository. While working on maintaining the [IPFS](https://github.com/ipfs) repositories, I needed a way to standardize Readmes across that organization. This specification started as a result of that.
+问题分析
+本质上来说，在k8s上部署一个redis集群和部署一个普通应用没有什么太大的区别，但需要注意下面几个问题：
 
-> Your documentation is complete when someone can use your module without ever
-having to look at its code. This is very important. This makes it possible for
-you to separate your module's documented interface from its internal
-implementation (guts). This is good because it means that you are free to
-change the module's internals as long as the interface remains the same.
+redis是一个有状态应用
 
-> Remember: the documentation, not the code, defines what a module does.
+这是部署redis集群时我们最需要注意的问题，当我们把redis以pod的形式部署在k8s中时，每个pod里缓存的数据都是不一样的，而且pod的IP是会随时变化，这时候如果使用普通的deployment和service来部署redis-cluster就会出现很多问题，因此需要改用StatefulSet + Headless Service来解决
 
-~ [Ken Williams, Perl Hackers](http://mathforum.org/ken/perl_modules.html#document)
+数据持久化
+redis虽然是基于内存的缓存，但还是需要依赖于磁盘进行数据的持久化，以便服务出现问题重启时可以恢复已经缓存的数据。在集群中，我们需要使用共享文件系统 + PV（持久卷）的方式来让整个集群中的所有pod都可以共享同一份持久化储存
 
-Writing READMEs is way too hard, and keeping them maintained is difficult. By offloading this process - making writing easier, making editing easier, making it clear whether or not an edit is up to spec or not - you can spend less time worrying about whether or not your initial documentation is good, and spend more time writing and using code.
+概念介绍
+在开始之前先来详细介绍一下几个概念和原理
 
-By having a standard, users can spend less time searching for the information they want. They can also build tools to gather search terms from descriptions, to automatically run example code, to check licensing, and so on.
+Headless Service 简单的说，Headless Service就是没有指定Cluster IP的Service，相应的在k8s的dns映射里，Headless Service的解析结果不是一个Cluster IP，而是它所关联的所有Pod的IP列表
 
-The goals for this repository are:
+StatefulSet 参考介绍 StatefulSet是k8s中专门用于解决有状态应用部署的一种资源，总的来说可以认为它是Deployment/RC的一个变种，它有以下几个特性：
 
-1. A well defined **specification**. This can be found in the [Spec document](spec.md). It is a constant work in progress; please open issues to discuss changes.
-2. **An example README**. This Readme is fully standard-readme compliant, and there are more examples in the `example-readmes` folder.
-3. A **linter** that can be used to look at errors in a given Readme. Please refer to the [tracking issue](https://github.com/RichardLitt/standard-readme/issues/5).
-4. A **generator** that can be used to quickly scaffold out new READMEs. See [generator-standard-readme](https://github.com/RichardLitt/generator-standard-readme).
-5. A **compliant badge** for users. See [the badge](#badge).
+StatefulSet管理的每个Pod都有唯一的文档/网络标识，并且按照数字规律生成，而不是像Deployment中那样名称和IP都是随机的（比如StatefulSet名字为redis，那么pod名就是redis-0, redis-1 ...）
+
+StatefulSet中ReplicaSet的启停顺序是严格受控的，操作第N个pod一定要等前N-1个执行完才可以
+
+StatefulSet中的Pod采用稳定的持久化储存，并且对应的PV不会随着Pod的删除而被销毁
+
+另外需要说明的是，StatefulSet必须要配合Headless Service使用，它会在Headless Service提供的DNS映射上再加一层，最终形成精确到每个pod的域名映射，格式如下：
+
+$(podname).$(headless service name)
+
+有了这个映射，就可以在配置集群时使用域名替代IP，实现有状态应用集群的管理
 
 ## 安装配置
 
