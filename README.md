@@ -69,14 +69,29 @@ install redis-ha
 $ helm install stable/redis-ha
 ```
 默认情况下，此图表共安装 3 个 pod
-一个 pod，包含一个 redis master 和 sentinel 容器（可选的 prometheus  sidecar 可用）
 
-两个 pod，每个 pod 包含一个 redis slave 和 sentinel 容器（可选的 prometheus sidecar 可用）
+其中 1 个 pod，包含一个 redis master 和 sentinel 容器（可选的 prometheus  sidecar 可用）
+
+另一个 pod， pod 中包含一个 redis slave 和 sentinel 容器（可选的 prometheus sidecar 可用）
 
 
 ## 最佳实践
 
-To see how the specification has been applied, see the [example-readmes](example-readmes/).
+# 初始化集群
+
+```sh
+kubectl exec -it redis-cluster-0 -n redis-cluster-issac \
+		-- redis-cli --cluster create \
+		--cluster-replicas 1 \
+$(kubectl get pods -l app=redis-cluster -n redis-cluster-issac -o jsonpath='{range.items[*]}{.status.podIP}:6379 ')
+```
+#  连接到 redis-0 容器
+$  kubectl exec -it redis-cluster-0 -n redis-cluster-example -- /bin/bash
+#  使用 redis-cli 工具连接到任意节点
+$  redis-cli -c -p 6379
+#  查看集群节点
+$  cluster nodes	  和   cluster info
+
 
 
 ## License
