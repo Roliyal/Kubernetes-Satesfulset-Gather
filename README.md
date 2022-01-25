@@ -77,7 +77,7 @@ $ helm install stable/redis-ha
 
 ## 最佳实践
 
-### 初始化集群
+###  1.初始化集群
 
 ```sh
 kubectl exec -it redis-cluster-0 -n redis-cluster-issac \
@@ -85,24 +85,48 @@ kubectl exec -it redis-cluster-0 -n redis-cluster-issac \
 		--cluster-replicas 1 \
 $(kubectl get pods -l app=redis-cluster -n redis-cluster-issac -o jsonpath='{range.items[*]}{.status.podIP}:6379 ')
 ```
-###  连接到 redis-0 容器
+###  2.连接到 redis-0 容器
 
 ```sh
 $  kubectl exec -it redis-cluster-0 -n redis-cluster-issac -- /bin/bash
 ```
 
-###  使用 redis-cli 工具连接到任意节点
+###  3.使用 redis-cli 工具连接到任意节点
 ```sh
 $  redis-cli -c -p 6379
 ```
-###  查看集群节点
+###  4.查看集群节点
 ```sh
 $  cluster nodes 
 $  cluster info
 ```
-###
+###  5.测试集群数据
+####  5.1 删除 POD ，集群自动创建 POD ，数据能正常访问；
 
+实践步骤5.1.1 删除 POD
+```sh
+$  kuberctl delete pod redis-cluster-3 -n redis-cluster-issac 
+```
+实践步骤5.1.1 进入重建后 POD ，查看数据是否丢失
+```sh
+$  kuberctl exec -it redis-cluster-3 -n redis-cluster-issac 
+$  get foo
+```
 
+####  5.2 强制删除集群，集群自动创建 POD ，数据不能丢失；
+
+实践步骤5.2.1 强制删除 POD
+```sh
+$  kubectl replace --force -f  statefulset.yaml
+```
+实践步骤5.2.1 进入重建后 POD ，查看数据是否丢失
+```sh
+$  kuberctl exec -it redis-cluster-0 -n redis-cluster-issac 
+$  get foo
+```
+#### 机器断电
+
+...
 
 
 ## License
