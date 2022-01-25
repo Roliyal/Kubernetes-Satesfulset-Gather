@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: redis-cluster-issac
+ 
+----
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis-cluster
+  namespace: redis-cluster-issac
+  labels:
+    app: redis-cluster
+spec:
+  selector:
+    app: redis-cluster
+    appCluster: redis-cluster
+  ports:
+  - name: redis-cluster
+    port: 7379
+  clusterIP: None
