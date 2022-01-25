@@ -29,6 +29,7 @@ There is much more inside the official Redis documentation. https://redis.io/doc
 - [License](#license)
 
 ## Background
+![image](https://user-images.githubusercontent.com/96233798/150904170-7cdf3be2-88ab-4caa-8852-b7c0e893f287.png)
 
 Standard Readme started with the issue originally posed by [@maxogden](https://github.com/maxogden) over at [feross/standard](https://github.com/feross/standard) in [this issue](https://github.com/feross/standard/issues/141), about whether or not a tool to standardize readmes would be useful. A lot of that discussion ended up in [zcei's standard-readme](https://github.com/zcei/standard-readme/issues/1) repository. While working on maintaining the [IPFS](https://github.com/ipfs) repositories, I needed a way to standardize Readmes across that organization. This specification started as a result of that.
 
