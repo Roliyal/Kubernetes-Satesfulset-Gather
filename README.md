@@ -62,7 +62,7 @@ Clone 当前（Kubernetes-Satesfulset-Gather）仓库 yaml 文件，在 kubernet
 ```sh
 $ kubectl apply -f ./*
 ```
-or 部署高可用 cluster redis 集群
+or 使用 helm 部署高可用 cluster redis 集群
 
 install redis-ha 
 ```sh
@@ -77,7 +77,7 @@ $ helm install stable/redis-ha
 
 ## 最佳实践
 
-# 初始化集群
+### 初始化集群
 
 ```sh
 kubectl exec -it redis-cluster-0 -n redis-cluster-issac \
@@ -85,12 +85,23 @@ kubectl exec -it redis-cluster-0 -n redis-cluster-issac \
 		--cluster-replicas 1 \
 $(kubectl get pods -l app=redis-cluster -n redis-cluster-issac -o jsonpath='{range.items[*]}{.status.podIP}:6379 ')
 ```
-#  连接到 redis-0 容器
-$  kubectl exec -it redis-cluster-0 -n redis-cluster-example -- /bin/bash
-#  使用 redis-cli 工具连接到任意节点
+###  连接到 redis-0 容器
+
+```sh
+$  kubectl exec -it redis-cluster-0 -n redis-cluster-issac -- /bin/bash
+```
+
+###  使用 redis-cli 工具连接到任意节点
+```sh
 $  redis-cli -c -p 6379
-#  查看集群节点
-$  cluster nodes	  和   cluster info
+```
+###  查看集群节点
+```sh
+$  cluster nodes 
+$  cluster info
+```
+###
+
 
 
 
