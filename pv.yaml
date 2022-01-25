@@ -23,7 +23,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: cluster2
+  name: cluster-2
   namespace: redis-cluster-issac
 spec:
   capacity:
