@@ -20,15 +20,13 @@ There is much more inside the official Redis documentation. https://redis.io/doc
 
 ## Table of Contents
 
-- [Background](#background)
-- [Install](#install)
-- [Usage](#usage)
-    - [Generator](#generator)
-- [Badge](#badge)
-- [Example Readmes](#example-readmes)
+- [集群背景](#集群背景)
+- [安装配置](#安装配置)
+- [如何使用](#如何使用)
+- [最佳实践](#最佳实践)
 - [License](#license)
 
-## Background
+## 集群背景
 ![image](https://user-images.githubusercontent.com/96233798/150904170-7cdf3be2-88ab-4caa-8852-b7c0e893f287.png)
 
 Standard Readme started with the issue originally posed by [@maxogden](https://github.com/maxogden) over at [feross/standard](https://github.com/feross/standard) in [this issue](https://github.com/feross/standard/issues/141), about whether or not a tool to standardize readmes would be useful. A lot of that discussion ended up in [zcei's standard-readme](https://github.com/zcei/standard-readme/issues/1) repository. While working on maintaining the [IPFS](https://github.com/ipfs) repositories, I needed a way to standardize Readmes across that organization. This specification started as a result of that.
@@ -55,7 +53,7 @@ The goals for this repository are:
 4. A **generator** that can be used to quickly scaffold out new READMEs. See [generator-standard-readme](https://github.com/RichardLitt/generator-standard-readme).
 5. A **compliant badge** for users. See [the badge](#badge).
 
-## Install
+## 安装配置
 
 This project uses [node](http://nodejs.org) and [npm](https://npmjs.com). Go check them out if you don't have them locally installed.
 
@@ -63,7 +61,7 @@ This project uses [node](http://nodejs.org) and [npm](https://npmjs.com). Go che
 $ npm install --global standard-readme-spec
 ```
 
-## Usage
+## 使用
 
 This is only a documentation package. You can print out [spec.md](spec.md) to your console:
 
@@ -72,7 +70,7 @@ $ standard-readme-spec
 # Prints out the standard-readme spec
 ```
 
-## Example Readmes
+## 最佳实践
 
 To see how the specification has been applied, see the [example-readmes](example-readmes/).
 
