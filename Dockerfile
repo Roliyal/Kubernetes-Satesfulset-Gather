@@ -1,4 +1,4 @@
-FROM nginx-1.16.1
+FROM nginx
 
 MAINTAINER issac
 
