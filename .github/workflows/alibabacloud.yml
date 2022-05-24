@@ -69,3 +69,20 @@ jobs:
         access-key-secret: "${{ secrets.ACCESS_KEY_SECRET }}"
         repository: "${{ env.NAMESPACE }}/${{ env.IMAGE }}"
         tag: "${{ env.TAG }}"
+        
+      # 2.1 Install Serverless Devs
+      - name: Install Serverless Devs
+        uses: actions/setup-node@v2
+        with:
+          node-version: 12
+          registry-url: https://registry.npmjs.org/
+      - run: npm install -g @serverless-devs/s
+
+
+      # 2.2 Config Serverless Devs
+      - name: Config Serverless Devs
+        run: s config add --AccountID ${{secrets.Account_ID}} --AccessKeyID ${{secrets.ACCESS_KEY_ID}} --AccessKeySecret ${{secrets.ACCESS_KEY_SECRET}} -a publish_access
+
+      # 2.3 Deploy to SAE
+      - name: Deploy to SAE
+        run: s deploy        
