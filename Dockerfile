@@ -1,18 +1,25 @@
-FROM alpine:3.8
+FROM centos:centos7.7.1908 
 
-LABEL maintainer="NGINX Docker Maintainers <docker-maint@nginx.com>"
+MAINTAINER wangxiaochun <root@wangxiaochun.com>
 
-ENV NGINX_VERSION 1.14.2
+RUN yum install -y  gcc gcc-c++  pcre pcre-devel zlib zlib-devel openssl openssl-devel \
+    && useradd -r -s /sbin/nologin nginx \
+    && yum clean all 
 
-RUN GPG_KEYS=B0F4253373F8F6F510D42178520A9993A1C052F8 \
-	***
-	&& ln -sf /dev/stderr /var/log/nginx/error.log
+ADD nginx-1.16.1.tar.gz /usr/local/src/ 
 
-COPY nginx.conf /etc/nginx/nginx.conf
-COPY nginx.vh.default.conf /etc/nginx/conf.d/default.conf
+RUN cd /usr/local/src/nginx-1.16.1 \
+    && ./configure --prefix=/apps/nginx \
+    && make \
+    && make install \
+    && rm -rf /usr/local/src/nginx*
 
-EXPOSE 80
+ADD nginx.conf /apps/nginx/conf/nginx.conf
 
-STOPSIGNAL SIGTERM
+COPY index.html /apps/nginx/html/
 
-CMD ["nginx", "-g", "daemon off;"]
+RUN ln -s /apps/nginx/sbin/nginx /usr/sbin/nginx 
+
+EXPOSE 80 443
+
+CMD ["nginx","-g","daemon off;"]
