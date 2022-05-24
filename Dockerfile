@@ -1,6 +1,6 @@
 FROM nginx
 
-MAINTAINER issac
+MAINTAINER issac 
 
 EXPOSE 80 443
 
